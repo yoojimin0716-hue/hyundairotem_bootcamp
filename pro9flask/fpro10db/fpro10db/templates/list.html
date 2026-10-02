@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>*상품정보*</h2>
+    {% if messages %} <!-- flash 메세지 관 출력-->
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>  <!-- m -> message로 수정: for문에서 만든 변수 이름과 맞춤 -->
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <p><a href="{{url_for('add_form')}}">[상품추가]</a></p> 
+    <table border='1'>
+        <tr>
+            <th>코드</th>
+            <th>상품명</th>
+            <th>수량</th>
+            <th>단가</th>
+            <th>관리</th>
+        </tr>
+        {% for row in rows %}
+        <tr>
+            <td>{{row.code}}</td>
+            <td>{{row.sang}}</td>
+            <td>{{row.su}}</td>
+            <td>{{row.dan}}</td>
+            <td>
+                <!-- 요청방법1 예: <a href="/edit?code=1">수정</a> -->
+                <!-- 요청방법2 예: <a href="/edit/1">수정</a> -->
+                <a href="{{url_for('edit_form', code=row.code)}}">수정</a>
+                /
+                <form action="{{url_for('delete_row', code=row.code)}}" method="post" style="display:inline;" 
+                onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                    <button type="submit">삭제</button>
+
+                </form>
+                
+            </td>
+        </tr>
+        {% endfor %}  
+    </table>
+</body>
+</html>
