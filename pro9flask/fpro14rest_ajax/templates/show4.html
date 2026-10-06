@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <button id="loadBtn">상품 자료 읽기(axios)</button>
+    <table id="resultTable">
+    </table>
+    <script>
+        document.getElementById("loadBtn").addEventListener("click", loadData);
+        async function loadData(){
+            try{
+                const response = await axios.get("/api/sangdata");
+                const data = response.data;
+                const table = document.getElementById("resultTable");
+                table.innerHTML = ""; // 테이블 초기화
+
+                if(data.length === 0){
+                    table.innerHTML = "<tr><td colspan='4'>자료가 없습니다.</td></tr>";
+                    return;
+                }
+
+                // [{'code': 1, 'sang': '장갑', 'su': 3, 'dan': 10000}...]
+                const keys = Object.keys(data[0]);
+
+                // 헤더
+                let html = "<tr>";
+                keys.forEach(key => {
+                    html += `<th>${key}</th>`;
+                });
+                html += "</tr>";
+
+                table.innerHTML = html;
+
+                // 자료 채우기 
+                data.forEach(row =>{
+                    let rowHtml = "<tr>";
+                        Object.values(row).forEach(value => {
+                            rowHtml += `<td>${value}</td>`;
+                        });
+                        rowHtml += "</tr>";
+                        table.innerHTML += rowHtml;
+                })
+
+            }catch(error){
+                alert("에러 : " + error);
+            }
+        };
+    </script>
+</body>
+</html>
