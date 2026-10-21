@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>직원 분석</title>
+<style>
+  table { border-collapse: collapse; margin-bottom: 20px; }
+  th, td { border: 1px solid #999; padding: 4px 10px; text-align: center; }
+  th { background: #eee; }
+</style>
+</head>
+<body>
+  <h2>1) 직원 목록</h2>
+  {{ jikwondata | safe }}
+
+  <h2>2) 부서명별 연봉합/평균</h2>
+  {{ busertstats | safe }}
+  <h2>2) 직급별 연봉합/평균</h2>
+  {{ jikstats | safe }}
+
+  <h2>3) 부서별 연봉합/평균 그래프</h2>
+  {% if chartdata %}
+    <img src="data:image/png;base64,{{ chartdata }}">
+  {% endif %}
+
+  <h2>4) 성별, 직급별 빈도표</h2>
+  {{ crossdata | safe }}
+
+  <h2>5) 부서별 최고 연봉자</h2>
+  {{ topdata | safe }}
+
+  <h2>6) 부서별 직원 비율 (총 인원: {{ total }}명)</h2>
+  {{ ratiodata | safe }}
+
+  <a href="/">메인으로</a>
+</body>
+</html>
